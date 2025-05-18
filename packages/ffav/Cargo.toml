@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 avformat = { path = "../avformat" }
+avcodec = { path = "../avcodec" }
+avutil = { path = "../avutil" }

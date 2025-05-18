@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+bitflags ={ workspace = true }
+avcodec = { workspace = true }
 
 [[bin]]
 name = "wav_example"
