@@ -1,4 +1,5 @@
-use avutil::util::MediaType;
+// 修复语法错误，将 `-` 替换为 `::` 并添加分号
+use ffav_types::media_kind::MediaKind;
 use crate::codec_id::CodecID;
 use crate::codec_tag::CodecTag;
 
@@ -25,7 +26,7 @@ pub struct CodecParameters {
     /**
      * General type of the encoded data.
      */
-    codec_type: MediaType,
+    codec_type: MediaKind,
     /**
      * Specific type of the encoded data (the codec used).
      */

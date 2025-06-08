@@ -3,7 +3,7 @@ use std::string::ToString;
 use strum_macros::{Display, EnumString};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, EnumString, Display)]
-pub enum MediaType {
+pub enum MediaKind {
     /// Usually treated as AVMEDIA_TYPE_DATA
     Unknown = -1,
     #[strum(serialize = "Video", to_string = "video")]

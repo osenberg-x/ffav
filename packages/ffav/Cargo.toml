@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-avformat = { path = "../avformat" }
-avcodec = { path = "../avcodec" }
-avutil = { path = "../avutil" }
+ffav-format = { path = "../ffav-format" }
+ffav-codec = { path = "../ffav-codec" }
+ffav-util = { path = "../ffav-util" }
+ffav-types = { path = "../ffav-types" }

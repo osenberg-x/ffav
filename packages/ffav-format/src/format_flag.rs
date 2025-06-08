@@ -1,10 +1,4 @@
-use std::env;
 use bitflags::bitflags;
-use avcodec::codec_id::CodecID;
-
-pub mod wav;
-
-pub mod format_context;
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -57,51 +51,5 @@ bitflags! {
         const TS_NEGATIVE = 0x40000;
         /**< Seeking is based on PTS */
         const SEEK_TO_PTS = 0x4000000;
-    }
-}
-
-pub struct CodecTag {
-    id: CodecID,
-    tag: u32,
-}
-
-#[derive(Debug)]
-pub struct InputFormat {
-    /**
-     * A comma separated list of short names for the format. New names
-     * may be appended with a minor bump.
-     */
-    name: Option<String>,
-    /**
-     * Descriptive name for the format, meant to be more human-readable
-     * than name. You should use the NULL_IF_CONFIG_SMALL() macro
-     * to define it.
-     */
-    long_name: Option<String>,
-    /**
-     * A list of mime types supported by the format.
-     */
-    flags: FormatFlags,
-    /**
-     * If extensions are defined, then no probe is done. You should
-     * usually not use extension format guessing because it is not
-     * reliable enough
-     */
-    extensions: Vec<&'static str>,
-}
-
-pub fn print_executable_path() {
-    let exe_path = env::current_exe().unwrap();
-    println!("Executable path: {:?}", exe_path);
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn wav_header() {
-        print_executable_path();
-        let header = crate::wav::WavHeader::new("/Users/xdo/Downloads/file_example_WAV_1MG.wav");
-        println!("{:?}", header);
     }
 }

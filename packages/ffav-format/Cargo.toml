@@ -1,11 +1,12 @@
 [package]
-name = "avformat"
+name = "ffav-format"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 bitflags ={ workspace = true }
-avcodec = { workspace = true }
+ffav-codec = { workspace = true }
+ffav-types ={ workspace = true }
 
 [[bin]]
 name = "wav_example"
