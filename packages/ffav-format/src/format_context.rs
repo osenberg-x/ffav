@@ -1,8 +1,12 @@
+use ffav_codec::codec::Codec;
 
 #[derive(Debug)]
 pub struct FormatContext {
     url: Option<String>,
     max_streams: u32,
+
+    // 0 - video codecs, 1 - audio codecs, 2 - subtitle codecs, 3 - data codecs
+    codecs: Vec<Codec>,
 }
 
 impl FormatContext {

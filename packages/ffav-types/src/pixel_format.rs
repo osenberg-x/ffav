@@ -1,0 +1,22 @@
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub enum PixelFormat {
+    None = -1,
+    YUV420P = 0,
+    YUVJ420P = 1,
+    YUV422P = 2,
+    YUV444P = 3,
+    YUV410P = 4,
+    YUV411P = 5,
+    YUV440P = 6,
+    YUVA420P = 7,
+    RGB24 = 8,
+    BGR24 = 9,
+    RGB565 = 10,
+    BGR565 = 11,
+    RGB555 = 12,
+    BGR555 = 13,
+    RGBA = 14,
+    BGRA = 15,
+    NV12 = 16,
+    NV21 = 17,
+}

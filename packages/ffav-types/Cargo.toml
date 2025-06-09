@@ -5,4 +5,5 @@ edition = "2024"
 
 [dependencies]
 strum ={ workspace = true }
-strum_macros ={ workspace = true }
+strum_macros = { workspace = true }
+bytes = { workspace = true }
