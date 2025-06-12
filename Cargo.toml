@@ -3,18 +3,21 @@ resolver = "2"
 
 members = [ 
     "packages/ffav", 
-    "packages/avformat",
-    "packages/avcodec",
-    "packages/avutil", 
+    "packages/ffav-format",
+    "packages/ffav-codec",
+    "packages/ffav-util", 
+    "packages/ffav-types", 
 ]
 
 [workspace.dependencies]
 ffav = { path = "packages/ffav" }
-avformat = { path = "packages/avformat" }
-avcodec = { path = "packages/avcodec" }
-avutil = { path = "packages/avutil" }
+ffav-format = { path = "packages/ffav-format" }
+ffav-codec = { path = "packages/ffav-codec" }
+ffav-util = { path = "packages/ffav-util" }
+ffav-types = { path = "packages/ffav-types" }
 
 bitflags = "2.9.1"
 strum = "0.27"
 strum_macros = "0.27"
+bytes = "1.10.1"
 

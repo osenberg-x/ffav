@@ -5,13 +5,22 @@ pub struct FormatContext {
     url: Option<String>,
     max_streams: u32,
 
+	// AVIOContext *pb;  TODO
+
     // 0 - video codecs, 1 - audio codecs, 2 - subtitle codecs, 3 - data codecs
     codecs: Vec<Codec>,
 }
 
 impl FormatContext {
-	fn open(&mut self, url: &str) -> Result<(), String> {
-		self.url = Some(url.to_string());
+	pub fn new(url: &str) -> Self {
+		Self {
+			url: Some(url.to_string()),
+			max_streams: 0,
+			codecs: Vec::new(),
+		}
+	}
+
+	pub fn open(&mut self) -> Result<(), String> {
 		Ok(())
 	}
 
