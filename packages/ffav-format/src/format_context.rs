@@ -21,6 +21,7 @@ impl FormatContext {
 	}
 
 	pub fn open(&mut self) -> Result<(), String> {
+		println!("url: {}", self.url.as_deref().unwrap_or(""));
 		Ok(())
 	}
 
