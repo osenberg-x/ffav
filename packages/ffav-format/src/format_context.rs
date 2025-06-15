@@ -1,27 +1,19 @@
-use ffav_codec::codec::Codec;
+use crate::demuxer::Demuxer;
 
-#[derive(Debug)]
+
+// #[derive(Debug)]
 pub struct FormatContext {
     url: Option<String>,
     max_streams: u32,
 
 	// AVIOContext *pb;  TODO
 
-    // 0 - video codecs, 1 - audio codecs, 2 - subtitle codecs, 3 - data codecs
-    codecs: Vec<Codec>,
+	demexer: Box<dyn Demuxer>,
 }
 
 impl FormatContext {
-	pub fn new(url: &str) -> Self {
-		Self {
-			url: Some(url.to_string()),
-			max_streams: 0,
-			codecs: Vec::new(),
-		}
-	}
-
-	pub fn open(&mut self) -> Result<(), String> {
-		println!("url: {}", self.url.as_deref().unwrap_or(""));
+	pub fn open(&mut self, url: &str) -> Result<(), String> {
+		// println!("url: {}", self.url.as_deref().unwrap_or(""));
 		Ok(())
 	}
 

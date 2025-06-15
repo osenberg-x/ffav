@@ -7,3 +7,4 @@ edition = "2024"
 strum ={ workspace = true }
 strum_macros = { workspace = true }
 bytes = { workspace = true }
+arc-slice = { workspace = true, features = ["inlined", "abort-on-refcount-overflow"]}

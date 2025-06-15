@@ -1,5 +1,5 @@
-use ffav_codec::codec_id::CodecID;
-use ffav_codec::codec_par::CodecParameters;
+use ffav_types::codec_id::CodecID;
+use ffav_types::codec_parameters::CodecParameters;
 
 #[derive(Debug)]
 struct Stream {
