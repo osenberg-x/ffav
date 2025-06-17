@@ -2,15 +2,16 @@ use strum_macros::{Display, EnumString};
 
 #[derive(Debug, Display, EnumString, Clone, PartialEq, Eq)]
 pub enum FrameType {
+	#[strum(serialize = "Unknown")]
 	Unknown = -1,
-	#[strum(serialize = "I", to_string = "I")]
+	#[strum(serialize = "I")]
 	I,
-	#[strum(serialize = "P", to_string = "P")]
+	#[strum(serialize = "P")]
 	P,
-	#[strum(serialize = "B", to_string = "B")]
+	#[strum(serialize = "B")]
 	B,
-	#[strum(serialize = "Skip", to_string = "Skip")]
+	#[strum(serialize = "Skip")]
 	SKIP,
-	#[strum(serialize = "Other", to_string = "Other")]
+	#[strum(serialize = "Other")]
 	OTHER,
 }

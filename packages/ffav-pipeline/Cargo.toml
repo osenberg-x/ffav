@@ -4,3 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+ffav-types ={ workspace = true }
+ffav-util ={ workspace = true }
+ffav-demux ={ workspace = true }
+ffav-mux ={ workspace = true }
+ffav-decode ={ workspace = true }
+ffav-encode ={ workspace = true }
+ffav-filter ={ workspace = true }

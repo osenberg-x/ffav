@@ -10,6 +10,7 @@ members = [
     "packages/ffav-mux", 
     "packages/ffav-decode", 
     "packages/ffav-encode", 
+    "packages/ffav-filter", 
 ]
 
 [workspace.dependencies]
@@ -19,6 +20,7 @@ ffav-demux = { path = "packages/ffav-demux"}
 ffav-mux = { path = "packages/ffav-mux"}
 ffav-decode = { path = "packages/ffav-decode" }
 ffav-encode = { path = "packages/ffav-encode" }
+ffav-filter ={ path = "packages/ffav-filter" }
 ffav-util = { path = "packages/ffav-util" }
 ffav-types = { path = "packages/ffav-types" }
 

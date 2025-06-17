@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 clap = { workspace = true, features = ["derive"] }
-
+arc-slice = { workspace = true }
