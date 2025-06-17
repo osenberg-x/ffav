@@ -1,0 +1,8 @@
+[package]
+name = "ffav-encode"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ffav-types = { workspace = true }
+env_logger = { workspace = true }

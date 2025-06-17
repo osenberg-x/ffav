@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-ffav-format ={ workspace = true  }
-ffav-codec = { workspace = true }
+ffav-pipeline ={ workspace = true  }
+ffav-decode = { workspace = true }
 ffav-util = { workspace = true }
 ffav-types = { workspace = true }
 

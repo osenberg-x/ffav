@@ -8,3 +8,5 @@ strum ={ workspace = true }
 strum_macros = { workspace = true }
 bytes = { workspace = true }
 arc-slice = { workspace = true, features = ["inlined", "abort-on-refcount-overflow"]}
+bitflags = { workspace = true }
+env_logger ={ workspace = true }

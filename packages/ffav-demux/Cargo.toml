@@ -1,0 +1,12 @@
+[package]
+name = "ffav-demux"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ffav-types = { workspace = true }
+env_logger = { workspace = true }
+
+[[bin]]
+name = "wav_example"
+path = "examples/wav_example.rs"

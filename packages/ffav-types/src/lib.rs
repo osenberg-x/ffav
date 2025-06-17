@@ -35,3 +35,11 @@ pub use codec_id::*;
 // Implements rational number arithmetic for media calculations
 pub mod rational;
 pub use rational::*;
+
+pub mod stream_attribute;
+pub use stream_attribute::{StreamAttribute};
+
+pub mod format_flag;
+pub use format_flag::{
+	FormatFlag,
+};

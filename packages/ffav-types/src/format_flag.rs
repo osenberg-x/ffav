@@ -2,7 +2,7 @@ use bitflags::bitflags;
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    pub struct FormatFlags: u32 {
+    pub struct FormatFlag: u32 {
         const NO_FILE = 0x0001;
         /**< Needs '%d' in filename. */
         const NEED_NUMBER = 0x0002;

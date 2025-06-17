@@ -1,5 +1,5 @@
 use std::fs;
-use ffav_format::wav::WavHeader;
+use ffav_demux::WavHeader;
 
 fn main() {
     let header = WavHeader::new("/Users/xdo/Downloads/file_example_WAV_1MG.wav");

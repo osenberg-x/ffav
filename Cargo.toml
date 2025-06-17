@@ -3,16 +3,22 @@ resolver = "2"
 
 members = [ 
     "packages/ffav", 
-    "packages/ffav-format",
-    "packages/ffav-codec",
+    "packages/ffav-pipeline", 
     "packages/ffav-util", 
     "packages/ffav-types", 
+    "packages/ffav-demux", 
+    "packages/ffav-mux", 
+    "packages/ffav-decode", 
+    "packages/ffav-encode", 
 ]
 
 [workspace.dependencies]
 ffav = { path = "packages/ffav" }
-ffav-format = { path = "packages/ffav-format" }
-ffav-codec = { path = "packages/ffav-codec" }
+ffav-pipeline = { path = "packages/ffav-pipeline" }
+ffav-demux = { path = "packages/ffav-demux"}
+ffav-mux = { path = "packages/ffav-mux"}
+ffav-decode = { path = "packages/ffav-decode" }
+ffav-encode = { path = "packages/ffav-encode" }
 ffav-util = { path = "packages/ffav-util" }
 ffav-types = { path = "packages/ffav-types" }
 
@@ -22,4 +28,5 @@ strum_macros = "0.27"
 bytes = "1.10.1"
 clap = { version = "4.5.4", features = ["derive"] }
 arc-slice = "0.1.0"
+env_logger = "0.11.8"
 
