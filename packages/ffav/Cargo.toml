@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 ffav-pipeline ={ workspace = true  }
 ffav-decode = { workspace = true }
-ffav-util = { workspace = true }
+ffav-utils = { workspace = true }
 ffav-types = { workspace = true }
 
 # clap = { workspace = true, features = ["derive"] }

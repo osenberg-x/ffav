@@ -1,6 +1,7 @@
 use std::{fs::File, io::{BufReader, Read}};
-use crate::demuxer::Demuxer;
+use crate::{demuxer::Demuxer, DemuxerContext};
 use crate::error::DemuxError;
+use crate::demuxer_context;
 use ffav_types::{
 	MediaPacket,
 	StreamAttribute,
@@ -88,24 +89,25 @@ impl WavHeader {
 }
 
 pub struct WavDemuxer {
-	handle: File,
+	ctx: DemuxerContext,
 	header: WavHeader,
 }
 
 impl Demuxer for WavDemuxer {
 	fn open(&mut self, url: &str) -> Result<(), DemuxError> {
-		let rs = File::open(url);
-		match rs {
-			Ok(f) => {
-				self.handle = f;
-			}
-			Err(e) => {
-				return Err(DemuxError::OpenFileError);
-			}
-		}
-		let header = WavHeader::new(&mut self.handle);
-		self.header = header;
-		Ok(())
+		// let rs = File::open(url);
+		// match rs {
+		// 	Ok(f) => {
+		// 		self.handle = f;
+		// 	}
+		// 	Err(e) => {
+		// 		return Err(DemuxError::OpenFileError);
+		// 	}
+		// }
+		// let header = WavHeader::new(&mut self.handle);
+		// self.header = header;
+		// Ok(())
+		todo!()
 	}
 	
 	fn read_probe(&mut self) -> Result<(), DemuxError> {

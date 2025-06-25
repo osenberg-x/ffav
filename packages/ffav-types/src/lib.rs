@@ -44,5 +44,8 @@ pub use format_flag::{
 	FormatFlag,
 };
 
-pub mod data_source;
-pub use data_source::DataSource;
+pub mod data_kind;
+pub use data_kind::DataKind;
+
+pub mod data_chunk;
+pub use data_chunk::DataChunk;

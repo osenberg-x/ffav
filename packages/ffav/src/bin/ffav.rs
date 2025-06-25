@@ -1,5 +1,5 @@
 use std::fs::File;
-use ffav_util::args::Args;
+use ffav_utils::Args;
 
 fn main() {
 	println!("Hello, ffav!");

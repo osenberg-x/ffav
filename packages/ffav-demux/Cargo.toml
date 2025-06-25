@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 ffav-types = { workspace = true }
+ffav-utils = { workspace = true }
 env_logger = { workspace = true }
 
 [[bin]]

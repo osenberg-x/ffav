@@ -4,7 +4,7 @@ resolver = "2"
 members = [ 
     "packages/ffav", 
     "packages/ffav-pipeline", 
-    "packages/ffav-util", 
+    "packages/ffav-utils", 
     "packages/ffav-types", 
     "packages/ffav-demux", 
     "packages/ffav-mux", 
@@ -21,7 +21,7 @@ ffav-mux = { path = "packages/ffav-mux"}
 ffav-decode = { path = "packages/ffav-decode" }
 ffav-encode = { path = "packages/ffav-encode" }
 ffav-filter ={ path = "packages/ffav-filter" }
-ffav-util = { path = "packages/ffav-util" }
+ffav-utils = { path = "packages/ffav-utils" }
 ffav-types = { path = "packages/ffav-types" }
 
 bitflags = "2.9.1"
@@ -31,4 +31,5 @@ bytes = "1.10.1"
 clap = { version = "4.5.4", features = ["derive"] }
 arc-slice = "0.1.0"
 env_logger = "0.11.8"
+thiserror = { version = "2.0.12" }
 
