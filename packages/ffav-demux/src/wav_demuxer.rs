@@ -1,10 +1,9 @@
-use std::{fs::File, io::{BufReader, Read}};
 use crate::{demuxer::Demuxer, DemuxerContext};
 use crate::error::DemuxError;
-use crate::demuxer_context;
 use ffav_types::{
 	MediaPacket,
 	StreamAttribute,
+	DataChunk
 };
 
 #[derive(Debug)]
@@ -26,10 +25,9 @@ pub struct WavHeader {
 }
 
 impl WavHeader {
-	pub fn new(file : &mut File) -> WavHeader {
-		let mut buffer = [0u8; 44];
-		file.read_exact(&mut buffer).unwrap();
-	
+	pub fn new(chunk : &DataChunk) -> WavHeader {
+		let buffer = chunk.data.as_slice();
+
 		let mut offset = 0;
 	
 		let chunk_id = String::from_utf8(buffer[offset..offset + 4].to_vec()).unwrap();
@@ -89,33 +87,37 @@ impl WavHeader {
 }
 
 pub struct WavDemuxer {
-	ctx: DemuxerContext,
+	ctx: Option<DemuxerContext>,
 	header: WavHeader,
 }
 
-impl Demuxer for WavDemuxer {
-	fn open(&mut self, url: &str) -> Result<(), DemuxError> {
-		// let rs = File::open(url);
-		// match rs {
-		// 	Ok(f) => {
-		// 		self.handle = f;
-		// 	}
-		// 	Err(e) => {
-		// 		return Err(DemuxError::OpenFileError);
-		// 	}
-		// }
-		// let header = WavHeader::new(&mut self.handle);
-		// self.header = header;
-		// Ok(())
-		todo!()
+impl WavDemuxer {
+	pub fn new(ctx: DemuxerContext) -> Self {
+		Self {
+			ctx: Some(ctx),
+			header: WavHeader::default(),
+		}
 	}
-	
+}
+
+impl Demuxer for WavDemuxer {
 	fn read_probe(&mut self) -> Result<(), DemuxError> {
 		Ok(())
 	}
 
 	fn read_header(&mut self) -> Result<(), DemuxError> {
-		Ok(())
+		let ctx = self.ctx.as_mut().ok_or(DemuxError::ArgumentError)?;
+		let chunk = ctx.reader.read_chunk(44);
+		match chunk {
+			Ok(v) => {
+				let data = v.unwrap();
+				self.header = WavHeader::new(&data);
+				Ok(())
+			}
+			Err(e) => {
+				Err(DemuxError::ReaderError(e))
+			}
+		}
 	}
 
 	fn read_packet(&mut self, packet: &mut MediaPacket) -> Result<(), DemuxError> {

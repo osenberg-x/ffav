@@ -1,11 +1,10 @@
-use arc_slice::layout::{ArcLayout, BoxedSliceLayout, DefaultLayout, VecLayout};
-use arc_slice::{ArcBytes, ArcBytesMut};
+use arc_slice::layout::{BoxedSliceLayout};
+use arc_slice::{ArcBytes};
 use ffav_types::DataChunk;
-use ffav_types::DataKind;
 use std::path::Path;
 use std::{
     fs::File,
-    io::{BufReader, Error, ErrorKind, Read, Seek, SeekFrom},
+    io::{Error, ErrorKind, Read, Seek, SeekFrom},
 };
 use thiserror::Error;
 

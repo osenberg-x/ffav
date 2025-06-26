@@ -1,18 +1,10 @@
-use std::{error, fmt};
+use ffav_utils::DataReaderError;
+use thiserror::Error;
 
-#[derive(Debug)]
+#[derive(Error, Debug)]
 pub enum DemuxError {
-    OpenFileError,
-    InvalidArgument,
-    InvalidData,
-}
-
-impl fmt::Display for DemuxError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            DemuxError::OpenFileError => write!(f, "Open file error"),
-            DemuxError::InvalidArgument => write!(f, "Invalid argument"),
-            DemuxError::InvalidData => write!(f, "Invalid data"),
-        }
-    }
+    #[error("Argument error")]
+    ArgumentError,
+    #[error("Reader error: {0}")]
+    ReaderError(#[from] DataReaderError),
 }

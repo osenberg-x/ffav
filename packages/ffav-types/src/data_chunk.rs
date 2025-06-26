@@ -1,5 +1,5 @@
-use arc_slice::layout::{ArcLayout, BoxedSliceLayout, DefaultLayout, VecLayout};
-use arc_slice::{ArcBytes, ArcBytesMut};
+use arc_slice::layout::{BoxedSliceLayout};
+use arc_slice::{ArcBytes};
 
 #[derive(Debug)]
 pub struct DataChunk {

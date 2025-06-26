@@ -6,11 +6,6 @@ use ffav_types::{
 use crate::error::DemuxError;
 
 pub trait Demuxer: Send + Sync {
-	// default open
-	// TODO(open file or open memory or open url)
-	fn open(&mut self, url: &str) -> Result<(), DemuxError>;
-	// fn close(&mut self, ctx: &mut FormatContext) -> Result<(), FormatError>;
-
 	// read probe information
 	fn read_probe(&mut self) -> Result<(), DemuxError>;
 
