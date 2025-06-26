@@ -5,7 +5,7 @@ use ffav_types::DataKind;
 use std::path::Path;
 use std::{
     fs::File,
-    io::{BufReader, Read},
+    io::{BufReader, Error, ErrorKind, Read, Seek, SeekFrom},
 };
 use thiserror::Error;
 
@@ -18,47 +18,124 @@ pub enum DataReaderError {
 }
 
 pub trait DataReader: Send + Sync {
-    fn read_chunk(&mut self, size: usize) -> Result<Option<DataChunk>, DataReaderError>;
-    fn seek(&mut self, position: u64) -> Result<(), DataReaderError>;
+    fn read_chunk(&mut self, size: u64) -> Result<Option<DataChunk>, DataReaderError>;
+    fn seek(&mut self, offset: i64) -> Result<u64, DataReaderError>;
 
     fn close(&mut self) -> Result<(), DataReaderError>;
 }
 
 #[derive(Debug)]
 pub struct FileReader {
-    handle: File,
-    position: usize,
+    file: Option<File>,
+    position: u64,
 }
 
 impl FileReader {
-    fn new(file_p: &Path) -> Result<Self, DataReaderError> {
-        let handle = File::open(file_p)?;
+    pub fn new(file_p: &Path) -> Result<Self, DataReaderError> {
+        let file = File::open(file_p)?;
         Ok(Self {
-            handle,
+            file: Some(file),
             position: 0,
         })
     }
 }
 
 impl DataReader for FileReader {
-    fn read_chunk(&mut self, size: usize) -> Result<Option<DataChunk>, DataReaderError> {
-        let mut buffer = vec![0u8; size];
-        self.handle.read_exact(&mut buffer).unwrap();
+    /// Reads a data chunk of specified size from the current file position.
+    ///
+    /// # Parameters
+    /// - `size`: Number of bytes to read (must be > 0)
+    ///
+    /// # Returns
+    /// - `Ok(Some(DataChunk))`: Successfully read a full chunk of data
+    /// - `Ok(None)`: Reached EOF before reading a complete chunk
+    /// - `Err(DataReaderError::IO(...))`: I/O operation failed
+    ///
+    /// # Behavior
+    /// - Updates internal position only on successful reads
+    /// - Returns None when EOF is encountered before completing the read
+    fn read_chunk(&mut self, size: u64) -> Result<Option<DataChunk>, DataReaderError> {
+        if 0 == size {
+            return Ok(None);
+        }
 
-        let slice_buffer = ArcBytes::<BoxedSliceLayout>::from(buffer);
+        let file = self.file.as_mut().ok_or(DataReaderError::IO(Error::new(
+            ErrorKind::Other,
+            "file not open",
+        )))?;
 
-        let data_chunk = DataChunk { data: slice_buffer };
+        let mut buffer = vec![0u8; size as usize];
+        match file.read_exact(&mut buffer) {
+            Ok(()) => {
+                self.position += size;
+                let slice_buffer = ArcBytes::<BoxedSliceLayout>::from(buffer);
+                let data_chunk = DataChunk { data: slice_buffer };
+                Ok(Some(data_chunk))
+            }
+            Err(ref e) if e.kind() == std::io::ErrorKind::UnexpectedEof => {
+                let actual_size = buffer.len()
+                    - e.get_ref()
+                        .map(|e| {
+                            e.downcast_ref::<std::io::Error>()
+                                .map(|e| e.raw_os_error())
+                                .flatten()
+                                .unwrap_or(0) as usize
+                        })
+                        .unwrap_or(0);
 
-        self.position += size;
-
-        Ok(Some(data_chunk))
+                if actual_size > 0 {
+                    self.position += actual_size as u64;
+                    let slice_buffer = ArcBytes::<BoxedSliceLayout>::from(buffer);
+                    let data_chunk = DataChunk { data: slice_buffer };
+                    Ok(Some(data_chunk))
+                } else {
+                    Ok(None)
+                }
+            }
+            Err(e) => Err(DataReaderError::IO(e)),
+        }
     }
 
-    fn seek(&mut self, position: u64) -> Result<(), DataReaderError> {
-        todo!()
+    /// Moves the file pointer by `offset` bytes relative to the current position.
+    ///
+    /// # Parameters
+    /// - `offset`: The number of bytes to move the file pointer (positive values move forward,
+    ///             negative values move backward).
+    ///
+    /// # Returns
+    /// - `Ok(u64)`: The new file pointer position in bytes.
+    /// - `Err(...)`:
+    ///   - `DataReaderError::IO(...)`: If an I/O operation fails.
+    fn seek(&mut self, offset: i64) -> Result<u64, DataReaderError> {
+        let file = self.file.as_mut().ok_or(DataReaderError::IO(Error::new(
+            ErrorKind::Other,
+            "file not open",
+        )))?;
+
+        let new_pos = file.seek(SeekFrom::Current(offset))?;
+        self.position = new_pos;
+        Ok(new_pos)
     }
 
+    /// Releases the file resource by taking ownership of the inner `File` and dropping it.
+    ///
+    /// This function consumes the internal `File` handle (if any) by calling `Option::take()`,
+    /// which transfers ownership and sets the internal state to `None`. The file will be
+    /// automatically closed when the returned `File` value is dropped.
+    ///
+    /// **Note:** This implementation does *not* explicitly call `sync_all()` or handle any
+    /// I/O errors that might occur during file closure or synchronization. If guaranteed
+    /// data persistence is required, consider adding explicit synchronization logic.
+    ///
+    /// # Returns
+    /// - `Ok(())`: Always returns success, as no error handling is implemented for file closure.
+    ///
+    /// # Example
+    /// ```rust
+    /// reader.close()?; // Releases the file resource
+    /// ```
     fn close(&mut self) -> Result<(), DataReaderError> {
-        todo!()
+        self.file.take();
+        Ok(())
     }
 }
