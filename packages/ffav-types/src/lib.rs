@@ -49,3 +49,6 @@ pub use data_kind::DataKind;
 
 pub mod data_chunk;
 pub use data_chunk::DataChunk;
+
+pub mod input_format;
+pub use input_format::InputFormat;
