@@ -1,11 +1,11 @@
 #[derive(Debug, Default)]
-pub struct InputFormat {
+pub struct InputMetadata {
 	name: Option<String>,
 	long_name: Option<String>,
 	mime_type: Option<String>,
 }
 
-impl InputFormat {
+impl InputMetadata {
 	pub fn new() -> Self {
 		Default::default()
 	}

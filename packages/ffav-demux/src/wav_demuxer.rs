@@ -6,8 +6,8 @@ use ffav_types::{
 	DataChunk
 };
 
-#[derive(Debug)]
-#[derive(Default)]
+#[derive(Debug, Default)]
+#[allow(dead_code)]
 pub struct WavHeader {
 	chunk_id: String,
 	chunk_size: u32,
@@ -83,7 +83,7 @@ impl WavHeader {
 		    subchunk2_id,
 		    subchunk2_size,
 		}
-	    }
+	}
 }
 
 pub struct WavDemuxer {
@@ -107,7 +107,8 @@ impl Demuxer for WavDemuxer {
 
 	fn read_header(&mut self) -> Result<(), DemuxError> {
 		let ctx = self.ctx.as_mut().ok_or(DemuxError::ArgumentError)?;
-		let chunk = ctx.reader.read_chunk(44);
+		let reader = ctx.get_reader_mut();
+		let chunk = reader.read_chunk(44);
 		match chunk {
 			Ok(v) => {
 				let data = v.unwrap();
