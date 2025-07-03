@@ -8,6 +8,7 @@ ffav-types = { workspace = true }
 ffav-utils = { workspace = true }
 env_logger = { workspace = true }
 thiserror = { workspace = true }
+inventory = { workspace = true }
 
 [[bin]]
 name = "wav_example"

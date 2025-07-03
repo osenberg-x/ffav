@@ -1,9 +1,35 @@
-use crate::error::MuxError;
-use ffav_types::media_packet::MediaPacket;
+use inventory;
 
-pub trait Muxer {
-	// fn create(&mut self, output: &mut dyn Write, format_context: &FormatContext) -> Result<()>;
-	fn open(&mut self, output_url: &str) -> Result<(), MuxError>;
-    fn write_packet(&mut self, packet: &MediaPacket) -> Result<(), MuxError>;
-    fn close(&mut self) -> Result<(), MuxError>;
+use ffav_types::{
+	MediaPacket,
+};
+use crate::error::MuxError;
+
+pub trait MuxerInstance: Send + Sync {
+	fn write_packet(&mut self, packet: &MediaPacket) -> Result<(), MuxError>;
+}
+
+pub trait Muxer: Send + Sync {
+	fn name(&self) -> &'static str;
+
+	fn supported_extensions(&self) -> &[&'static str];
+
+	fn open(&self) -> Result<Box<dyn MuxerInstance>, MuxError>;
+}
+
+pub struct MuxerRegistry {
+	pub muxer: &'static dyn Muxer,
+}
+
+inventory::collect!(MuxerRegistry);
+
+#[macro_export]
+macro_rules! register_muxer {
+	(&muxer:expr) => {
+		inventory::submit! {
+			MuxerRegistry {
+				muxer: &$muxer,
+			}
+		}
+	};
 }

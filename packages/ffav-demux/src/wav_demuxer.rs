@@ -99,33 +99,3 @@ impl WavDemuxer {
 		}
 	}
 }
-
-impl Demuxer for WavDemuxer {
-	fn read_probe(&mut self) -> Result<(), DemuxError> {
-		Ok(())
-	}
-
-	fn read_header(&mut self) -> Result<(), DemuxError> {
-		let ctx = self.ctx.as_mut().ok_or(DemuxError::ArgumentError)?;
-		let reader = ctx.get_reader_mut();
-		let chunk = reader.read_chunk(44);
-		match chunk {
-			Ok(v) => {
-				let data = v.unwrap();
-				self.header = WavHeader::new(&data);
-				Ok(())
-			}
-			Err(e) => {
-				Err(DemuxError::ReaderError(e))
-			}
-		}
-	}
-
-	fn read_packet(&mut self, packet: &mut MediaPacket) -> Result<(), DemuxError> {
-		Ok(())
-	}
-
-	fn get_stream_attribute(&mut self, index: usize) -> Option<&StreamAttribute> {
-		None
-	}
-}

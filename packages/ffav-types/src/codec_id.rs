@@ -5,4 +5,14 @@ pub enum CodecID {
 
     /* video codecs */
     H264,
+    H265,
+    VP8,
+    VP9,
+    AAC,
+
+    MP4,
+
+    MP3,
+    OPUS,
+    WAV,
 }

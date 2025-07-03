@@ -1,3 +1,5 @@
+use inventory;
+
 use ffav_types::{
 	MediaPacket,
 	StreamAttribute,
@@ -5,15 +7,33 @@ use ffav_types::{
 
 use crate::error::DemuxError;
 
+pub trait DemuxerInstance: Send + Sync {
+	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError>;
+}
+
 pub trait Demuxer: Send + Sync {
-	// read probe information
-	fn read_probe(&mut self) -> Result<(), DemuxError>;
+	fn name(&self) -> &'static str;
 
-	// read header of stream
-	fn read_header(&mut self) -> Result<(), DemuxError>;
+	fn extensions(&self) -> &[&'static str];
 
-	// read data packet
-	fn read_packet(&mut self, packet: &mut MediaPacket) -> Result<(), DemuxError>;
+	fn probe(&self, data: &[u8]) -> u32;
 
-	fn get_stream_attribute(&mut self, index: usize) -> Option<&StreamAttribute>;
+	fn open(&self) -> Result<Box<dyn DemuxerInstance>, DemuxError>;
+}
+
+pub struct DemuxerRegistry {
+	pub demuxer: &'static dyn Demuxer,
+}
+
+inventory::collect!(DemuxerRegistry);
+
+#[macro_export]
+macro_rules! register_demuxer {
+	(&demuxer:expr) => {
+		inventory::submit! {
+			DemuxerRegistry {
+				demuxer: &$demuxer,
+			}
+		}
+	};
 }
