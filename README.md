@@ -1,2 +1,2 @@
 # ffav
-RRewrite ffmpeg in rust
+rewrite ffmpeg in rust
