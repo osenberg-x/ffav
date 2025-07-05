@@ -11,3 +11,5 @@ ffav-mux = { workspace = true }
 ffav-decode = { workspace = true }
 ffav-encode = { workspace = true }
 ffav-filter = { workspace = true }
+
+inventory = { workspace = true }

@@ -4,4 +4,8 @@ pub use error::{
 };
 
 pub mod decoder;
-pub use decoder::Decoder;
+pub use decoder::{
+    Decoder,
+    DecoderInstance,
+    DecoderRegistry
+};

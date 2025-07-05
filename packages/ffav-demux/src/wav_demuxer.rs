@@ -1,5 +1,9 @@
-use crate::{demuxer::Demuxer, DemuxerContext};
-use crate::error::DemuxError;
+use crate::{
+	Demuxer, 
+	DemuxerInstance, 
+	DemuxError, 
+	DemuxerContext
+};
 use ffav_types::{
 	MediaPacket,
 	StreamAttribute,
@@ -86,6 +90,14 @@ impl WavHeader {
 	}
 }
 
+pub struct WavDemuxerInstance;
+
+impl DemuxerInstance for WavDemuxerInstance {
+	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError> {
+		todo!()
+	}
+}
+
 pub struct WavDemuxer {
 	ctx: Option<DemuxerContext>,
 	header: WavHeader,
@@ -97,5 +109,23 @@ impl WavDemuxer {
 			ctx: Some(ctx),
 			header: WavHeader::default(),
 		}
+	}
+}
+
+impl Demuxer for WavDemuxer {
+	fn name(&self) -> &'static str {
+		"wav"
+	}
+
+	fn extensions(&self) -> &[&'static str] {
+		&["wav"]
+	}
+
+	fn probe(&self, data: &[u8]) -> u32 {
+		todo!()
+	}
+
+	fn open(&self) -> Result<Box<dyn DemuxerInstance>, DemuxError> {
+		Ok(Box::new(WavDemuxerInstance))
 	}
 }
