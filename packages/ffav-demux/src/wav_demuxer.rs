@@ -1,13 +1,13 @@
 use crate::{
+	register_demuxer,
+	DemuxError, 
 	Demuxer, 
 	DemuxerInstance, 
-	DemuxError, 
-	DemuxerContext
+	DemuxerRegistry
 };
 use ffav_types::{
 	MediaPacket,
-	StreamAttribute,
-	DataChunk
+	DataChunk,
 };
 
 #[derive(Debug, Default)]
@@ -96,25 +96,17 @@ impl DemuxerInstance for WavDemuxerInstance {
 	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError> {
 		todo!()
 	}
-}
 
-pub struct WavDemuxer {
-	ctx: Option<DemuxerContext>,
-	header: WavHeader,
-}
-
-impl WavDemuxer {
-	pub fn new(ctx: DemuxerContext) -> Self {
-		Self {
-			ctx: Some(ctx),
-			header: WavHeader::default(),
-		}
+	fn seek(&mut self, _timestamp: u64) -> Result<(), String> {
+		todo!()
 	}
 }
 
+pub struct WavDemuxer;
+
 impl Demuxer for WavDemuxer {
 	fn name(&self) -> &'static str {
-		"wav"
+		"W64-Demuxer"
 	}
 
 	fn extensions(&self) -> &[&'static str] {
@@ -129,3 +121,7 @@ impl Demuxer for WavDemuxer {
 		Ok(Box::new(WavDemuxerInstance))
 	}
 }
+
+static WAV_DEMUXER: WavDemuxer = WavDemuxer;
+
+register_demuxer!(WAV_DEMUXER);

@@ -9,6 +9,8 @@ use crate::error::DemuxError;
 
 pub trait DemuxerInstance: Send + Sync {
 	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError>;
+
+	fn seek(&mut self, timestamp: u64) -> Result<(), String>;
 }
 
 pub trait Demuxer: Send + Sync {
@@ -29,7 +31,7 @@ inventory::collect!(DemuxerRegistry);
 
 #[macro_export]
 macro_rules! register_demuxer {
-	(&demuxer:expr) => {
+	($demuxer:expr) => {
 		inventory::submit! {
 			DemuxerRegistry {
 				demuxer: &$demuxer,

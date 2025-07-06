@@ -1,4 +1,4 @@
-use ffav_types::DataChunk;
+use crate::DataChunk;
 use thiserror::Error;
 
 #[derive(Error, Debug)]

@@ -1,4 +1,4 @@
-use ffav_utils::DataReaderError;
+use ffav_types::DataReaderError;
 use thiserror::Error;
 
 #[derive(Error, Debug)]

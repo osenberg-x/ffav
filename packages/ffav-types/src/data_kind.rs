@@ -1,7 +1,7 @@
 #[derive(Debug)]
 pub enum DataKind {
-	Local,
-	Network,
-	Memory,
+	Local(String),
+	Network(String),
+	Memory(String),
 	Unknown,
 }

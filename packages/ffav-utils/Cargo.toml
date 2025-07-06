@@ -4,8 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-ffav-types = { workspace = true }
-
 clap = { workspace = true, features = ["derive"] }
 arc-slice = { workspace = true }
 thiserror = { workspace = true }

@@ -1,6 +1,6 @@
 use arc_slice::layout::{BoxedSliceLayout};
 use arc_slice::{ArcBytes};
-use ffav_types::DataChunk;
+use crate::DataChunk;
 use std::path::Path;
 use std::{
     fs::File,
