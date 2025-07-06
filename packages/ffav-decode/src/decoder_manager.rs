@@ -25,7 +25,7 @@ impl DecoderManager {
 			self.decoders.insert(entry.decoder.codec_id(), entry.decoder);
 		}
 
-        println!("Registered {} decoders.", self.decoders.len());
+        println!("registered {} decoders.", self.decoders.len());
 	}
 
 	pub fn find_decoder(&self, codec_id: CodecID) -> Option<&'static dyn Decoder> {

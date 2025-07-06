@@ -26,7 +26,7 @@ impl DemuxerManager {
             self.demuxers.insert(entry.demuxer.name(), entry.demuxer);
         }
 
-        println!("Registered {} demuxers.", self.demuxers.len());
+        println!("registered {} demuxers.", self.demuxers.len());
 	}
 
     pub fn find_demuxer(&self, data: &[u8], url: Option<&str>) -> Option<&'static dyn Demuxer> {

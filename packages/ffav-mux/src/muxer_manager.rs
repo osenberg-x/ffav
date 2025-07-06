@@ -25,7 +25,7 @@ impl MuxerManager {
             self.muxers.insert(entry.muxer.name(), entry.muxer);
         }
 
-        println!("Registered {} muxers.", self.muxers.len());
+        println!("registered {} muxers.", self.muxers.len());
 	}
 
     pub fn find_muxer(&self, name: &str) -> Option<&'static dyn Muxer> {

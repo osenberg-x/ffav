@@ -25,7 +25,7 @@ impl EncoderManager {
             self.encoders.insert(entry.encoder.name(), entry.encoder);
         }
 
-        println!("Registered {} encoders.", self.encoders.len());
+        println!("registered {} encoders.", self.encoders.len());
 	}
 
 	pub fn find_encoder(&self, name: &str) -> Option<&'static dyn Encoder> {
