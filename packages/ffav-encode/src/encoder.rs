@@ -16,8 +16,7 @@ pub trait EncoderInstance: Send + Sync {
 pub trait Encoder: Send + Sync {
 	fn name(&self) -> &'static str;
 
-	// fn codec_id(&self) -> CodecID;
-	fn supported_formats(&self) -> &[&'static str];
+	fn formats(&self) -> &[&'static str];
 
 	fn create(&self) -> Result<Box<dyn EncoderInstance>, EncodeError>;
 }

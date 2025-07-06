@@ -10,7 +10,7 @@ members = [
     "packages/ffav-mux", 
     "packages/ffav-decode", 
     "packages/ffav-encode", 
-    "packages/ffav-filter", 
+    "packages/ffav-filter",
 ]
 
 [workspace.dependencies]

@@ -12,7 +12,7 @@ pub trait MuxerInstance: Send + Sync {
 pub trait Muxer: Send + Sync {
 	fn name(&self) -> &'static str;
 
-	fn supported_extensions(&self) -> &[&'static str];
+	fn extensions(&self) -> &[&'static str];
 
 	fn open(&self) -> Result<Box<dyn MuxerInstance>, MuxError>;
 }
