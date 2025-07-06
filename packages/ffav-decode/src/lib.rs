@@ -9,3 +9,6 @@ pub use decoder::{
     DecoderInstance,
     DecoderRegistry
 };
+
+pub mod decoder_manager;
+pub use decoder_manager::DecoderManager;

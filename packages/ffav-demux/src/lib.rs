@@ -8,5 +8,8 @@ pub use demuxer::{
 	DemuxerRegistry,
 };
 
+pub mod demuxer_manager;
+pub use demuxer_manager::DemuxerManager;
+
 pub mod wav_demuxer;
 pub use wav_demuxer::WavHeader;

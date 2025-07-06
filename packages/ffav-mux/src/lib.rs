@@ -7,3 +7,6 @@ pub use muxer::{
 	MuxerInstance,
 	MuxerRegistry
 };
+
+pub mod muxer_manager;
+pub use muxer_manager::MuxerManager;

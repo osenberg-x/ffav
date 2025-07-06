@@ -7,3 +7,6 @@ pub use encoder::{
     EncoderInstance,
     EncoderRegistry
 };
+
+pub mod encoder_manager;
+pub use encoder_manager::EncoderManager;
