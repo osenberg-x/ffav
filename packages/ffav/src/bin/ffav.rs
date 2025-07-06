@@ -1,12 +1,16 @@
 use std::fs::File;
 use ffav_utils::Args;
+use ffav_pipeline::{pipeline::ffav_register_all, Pipeline};
+
 
 fn main() {
 	println!("Hello, ffav!");
 
-	let args = Args::new();
+	// let args = Args::new();
 
-	println!("input arg: {}", args.url);
+	// println!("input arg: {}", args.url);
 
-	let f  = File::open("~/Downloads/example.mp4");
+	ffav_register_all();
+
+	Pipeline::list_demuxers();
 }
