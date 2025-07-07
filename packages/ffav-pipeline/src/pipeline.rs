@@ -1,11 +1,11 @@
-use std::{collections::HashMap};
+use std::{collections::HashMap, io::Sink};
 
 use ffav_decode::{DecodeError, Decoder, DecoderInstance, DecoderRegistry, DecoderManager};
 use ffav_demux::{DemuxError, Demuxer, DemuxerInstance, DemuxerRegistry, DemuxerManager};
 use ffav_encode::{EncodeError, Encoder, EncoderInstance, EncoderRegistry, EncoderManager};
 use ffav_filter::Filter;
 use ffav_mux::{MuxError, Muxer, MuxerInstance, MuxerRegistry, MuxerManager};
-use ffav_types::CodecID;
+use ffav_types::{CodecID, SourceContext, SinkContext};
 use std::sync::OnceLock;
 
 static DEMUXER_MANAGER: OnceLock<DemuxerManager> = OnceLock::new();
@@ -21,11 +21,16 @@ pub fn ffav_register_all() {
 }
 
 pub struct Pipeline {
+	source: Option<SourceContext>,
+	sink: Option<SinkContext>,
 }
 
 impl Pipeline {
     pub fn new() -> Self {
-		Self {  }
+		Self {  
+			source: None,
+			sink: None,
+		}
     }
 
 	pub fn find_demuxer(&self) -> Option<&'static dyn Demuxer> {
