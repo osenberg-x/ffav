@@ -37,4 +37,13 @@ impl SourceContext {
 			reader,
 		})
 	}
+	
+	pub fn url(&self) -> Option<&str> {
+		match &self.data_kind {
+			DataKind::Local(url) => Some(url.as_str()),
+			DataKind::Memory(url) => Some(url.as_str()),
+			DataKind::Network(url) => Some(url.as_str()),
+			_ => None,
+		}
+	}
 }
