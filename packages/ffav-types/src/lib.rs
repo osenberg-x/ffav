@@ -57,7 +57,7 @@ pub mod data_reader;
 pub use data_reader::*;
 
 pub mod data_writer;
-pub use data_writer::DataWriter;
+pub use data_writer::*;
 
 pub mod source_context;
 pub use source_context::SourceContext;

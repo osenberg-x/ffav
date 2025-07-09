@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-ffav-pipeline ={ workspace = true  }
+ffav-app ={ workspace = true  }
 ffav-decode = { workspace = true }
 ffav-utils = { workspace = true }
 ffav-types = { workspace = true }

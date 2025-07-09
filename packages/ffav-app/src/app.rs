@@ -1,11 +1,36 @@
-use std::{collections::HashMap, io::Sink};
+use ffav_decode::{
+	Decoder, 
+	DecoderInstance, 
+	DecoderRegistry, 
+	DecoderManager
+};
+use ffav_demux::{
+	Demuxer, 
+	DemuxerInstance, 
+	DemuxerRegistry, 
+	DemuxerManager
+};
+use ffav_encode::{
+	Encoder, 
+	EncoderInstance, 
+	EncoderRegistry, 
+	EncoderManager
+};
+// use ffav_filter::Filter;
+use ffav_mux::{
+	Muxer, 
+	MuxerInstance, 
+	MuxerRegistry, 
+	MuxerManager
+};
+use crate::AppError;
 
-use ffav_decode::{DecodeError, Decoder, DecoderInstance, DecoderRegistry, DecoderManager};
-use ffav_demux::{DemuxError, Demuxer, DemuxerInstance, DemuxerRegistry, DemuxerManager};
-use ffav_encode::{EncodeError, Encoder, EncoderInstance, EncoderRegistry, EncoderManager};
-use ffav_filter::Filter;
-use ffav_mux::{MuxError, Muxer, MuxerInstance, MuxerRegistry, MuxerManager};
-use ffav_types::{CodecID, SourceContext, SinkContext};
+use ffav_types::{
+	CodecID, 
+	SourceContext, 
+	SinkContext,
+	DataKind
+};
 use std::sync::OnceLock;
 
 static DEMUXER_MANAGER: OnceLock<DemuxerManager> = OnceLock::new();
@@ -20,18 +45,43 @@ pub fn ffav_register_all() {
 	ENCODER_MANAGER.get_or_init(|| EncoderManager::new());
 }
 
-pub struct Pipeline {
+pub struct App {
 	source: Option<SourceContext>,
 	sink: Option<SinkContext>,
 }
 
-impl Pipeline {
+impl App {
     pub fn new() -> Self {
 		Self {  
 			source: None,
 			sink: None,
 		}
     }
+
+	pub fn new_with_context(source: DataKind, sink: DataKind) -> Result<Self, AppError> {
+		let source_context = SourceContext::new(source)?;
+		let sink_context = SinkContext::new(sink)?;
+		Ok(Self {
+			source: Some(source_context),
+			sink: Some(sink_context),
+		})
+	}
+
+	pub fn new_with_source(source: DataKind) -> Result<Self, AppError> {
+		let source_context = SourceContext::new(source)?;
+		Ok(Self {
+			source: Some(source_context),
+			sink: None,
+		})
+	}
+
+	pub fn new_with_sink(sink: DataKind) -> Result<Self, AppError> {
+		let sink_context = SinkContext::new(sink)?;
+		Ok(Self {
+			source: None,
+			sink: Some(sink_context),
+		})
+	}
 
 	pub fn find_demuxer(&self) -> Option<&'static dyn Demuxer> {
 		let data = b"1234";

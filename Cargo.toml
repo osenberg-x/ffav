@@ -3,7 +3,7 @@ resolver = "2"
 
 members = [ 
     "packages/ffav", 
-    "packages/ffav-pipeline", 
+    "packages/ffav-app", 
     "packages/ffav-utils", 
     "packages/ffav-types", 
     "packages/ffav-demux", 
@@ -15,7 +15,7 @@ members = [
 
 [workspace.dependencies]
 ffav = { path = "packages/ffav" }
-ffav-pipeline = { path = "packages/ffav-pipeline" }
+ffav-app = { path = "packages/ffav-app" }
 ffav-demux = { path = "packages/ffav-demux"}
 ffav-mux = { path = "packages/ffav-mux"}
 ffav-decode = { path = "packages/ffav-decode" }

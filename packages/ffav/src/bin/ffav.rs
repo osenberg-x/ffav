@@ -1,6 +1,6 @@
 use std::fs::File;
 use ffav_utils::Args;
-use ffav_pipeline::{pipeline::ffav_register_all, Pipeline};
+use ffav_app::{app::ffav_register_all, App};
 
 
 fn main() {
@@ -12,5 +12,5 @@ fn main() {
 
 	ffav_register_all();
 
-	Pipeline::list_demuxers();
+	App::list_demuxers();
 }
