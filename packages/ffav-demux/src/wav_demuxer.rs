@@ -1,3 +1,4 @@
+use std::mem;
 use crate::{
 	register_demuxer,
 	DemuxError, 
@@ -13,10 +14,10 @@ use ffav_types::{
 #[derive(Debug, Default)]
 #[allow(dead_code)]
 pub struct WavHeader {
-	chunk_id: String,
+	chunk_id: [u8; 4],
 	chunk_size: u32,
-	format: String,
-	subchunk1_id: String,
+	format: [u8; 4],
+	subchunk1_id: [u8; 4],
 	subchunk1_size: u32,
 	audio_format: u16,
 	num_channels: u16,
@@ -24,26 +25,30 @@ pub struct WavHeader {
 	byte_rate: u32,
 	block_align: u16,
 	bits_per_sample: u16,
-	subchunk2_id: String,
+	subchunk2_id: [u8; 4],
 	subchunk2_size: u32,
 }
 
 impl WavHeader {
-	pub fn new(chunk : &DataChunk) -> WavHeader {
-		let buffer = chunk.data.as_slice();
+	pub fn new() -> WavHeader {
+		WavHeader::default()
+	}
+
+	pub fn from_data(chunk : &[u8]) -> WavHeader {
+		let buffer = chunk;
 
 		let mut offset = 0;
 	
-		let chunk_id = String::from_utf8(buffer[offset..offset + 4].to_vec()).unwrap();
+		let chunk_id = buffer[offset..offset + 4].try_into().unwrap();
 		offset += 4;
 	
 		let chunk_size = u32::from_be_bytes(buffer[offset..offset + 4].try_into().unwrap());
 		offset += 4;
 	
-		let format = String::from_utf8(buffer[offset..offset + 4].to_vec()).unwrap();
+		let format = buffer[offset..offset + 4].try_into().unwrap();
 		offset += 4;
 	
-		let subchunk1_id = String::from_utf8(buffer[offset..offset + 4].to_vec()).unwrap();
+		let subchunk1_id = buffer[offset..offset + 4].try_into().unwrap();
 		offset += 4;
 	
 		let subchunk1_size = u32::from_le_bytes(buffer[offset..offset + 4].try_into().unwrap());
@@ -67,7 +72,7 @@ impl WavHeader {
 		let bits_per_sample = u16::from_le_bytes(buffer[offset..offset + 2].try_into().unwrap());
 		offset += 2;
 	
-		let subchunk2_id = String::from_utf8(buffer[offset..offset + 4].to_vec()).unwrap();
+		let subchunk2_id = buffer[offset..offset + 4].try_into().unwrap();
 		offset += 4;
 	
 		let subchunk2_size = u32::from_le_bytes(buffer[offset..offset + 4].try_into().unwrap());
@@ -90,10 +95,20 @@ impl WavHeader {
 	}
 }
 
-pub struct WavDemuxerInstance;
+pub struct WavDemuxerInstance {
+	pub header: WavHeader,
+}
+
+impl WavDemuxerInstance {
+	fn new() -> WavDemuxerInstance {
+		WavDemuxerInstance {
+			header: WavHeader::new(),
+		}
+	}
+}
 
 impl DemuxerInstance for WavDemuxerInstance {
-	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError> {
+	fn read_packet(&mut self) -> Result<MediaPacket, DemuxError> {
 		todo!()
 	}
 
@@ -113,12 +128,23 @@ impl Demuxer for WavDemuxer {
 		&["wav"]
 	}
 
+	fn header_size(&self) -> usize {
+		mem::size_of::<WavHeader>()
+	}
+
 	fn probe(&self, data: &[u8]) -> u32 {
-		todo!()
+		let header = WavHeader::from_data(data);
+		if header.chunk_id != [b'R', b'I', b'F', b'F'] {
+			return 0;
+		}
+		if header.format != [b'W', b'A', b'V', b'E'] {
+			return 0;
+		}
+		10
 	}
 
 	fn open(&self) -> Result<Box<dyn DemuxerInstance>, DemuxError> {
-		Ok(Box::new(WavDemuxerInstance))
+		Ok(Box::new(WavDemuxerInstance::new()))
 	}
 }
 

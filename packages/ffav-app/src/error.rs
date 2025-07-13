@@ -5,6 +5,7 @@ use ffav_mux::MuxError;
 use ffav_decode::DecodeError;
 use ffav_encode::EncodeError;
 
+#[derive(Debug)]
 pub enum AppError {
 	DataReaderError(DataReaderError),
 	DataWriterError(DataWriterError),

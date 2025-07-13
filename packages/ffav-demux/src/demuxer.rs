@@ -8,7 +8,7 @@ use ffav_types::{
 use crate::error::DemuxError;
 
 pub trait DemuxerInstance: Send + Sync {
-	fn read_packet(&mut self) -> Result<Option<MediaPacket>, DemuxError>;
+	fn read_packet(&mut self) -> Result<MediaPacket, DemuxError>;
 
 	fn seek(&mut self, timestamp: u64) -> Result<(), String>;
 }
@@ -17,6 +17,8 @@ pub trait Demuxer: Send + Sync {
 	fn name(&self) -> &'static str;
 
 	fn extensions(&self) -> &[&'static str];
+
+	fn header_size(&self) -> usize;
 
 	fn probe(&self, data: &[u8]) -> u32;
 

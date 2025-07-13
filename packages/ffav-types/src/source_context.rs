@@ -46,4 +46,8 @@ impl SourceContext {
 			_ => None,
 		}
 	}
+
+	pub fn reader_mut(&mut self) -> Option<&mut Box<dyn DataReader>> {
+		self.reader.as_mut()
+	}
 }

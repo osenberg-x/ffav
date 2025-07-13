@@ -83,9 +83,15 @@ impl App {
 		})
 	}
 
-	pub fn find_demuxer(&self) -> Option<&'static dyn Demuxer> {
-		let data = b"1234";
-		DEMUXER_MANAGER.get().unwrap().find_demuxer(data, None)
+	pub fn find_demuxer(&mut self) -> Result<&'static dyn Demuxer, AppError> {
+		// let data = b"1234";
+        let Some(source_context) = &mut self.source else {
+			// todo(optimized it)
+            panic!("source is None");
+        };
+        let reader = source_context.reader_mut().unwrap();
+		let demuxer = DEMUXER_MANAGER.get().unwrap().find_demuxer(reader, None)?;
+		Ok(demuxer)
 	}
 
 	pub fn list_demuxers() {

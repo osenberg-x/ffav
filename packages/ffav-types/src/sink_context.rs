@@ -37,4 +37,8 @@ impl SinkContext {
 			_ => None,
 		}
 	}
+
+	pub fn writer_mut(&mut self) -> Option<&mut dyn DataWriter> {
+		todo!()
+	}
 }

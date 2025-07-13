@@ -17,7 +17,7 @@ pub enum DataReaderError {
 }
 
 pub trait DataReader: Send + Sync {
-    fn read_chunk(&mut self, size: u64) -> Result<Option<DataChunk>, DataReaderError>;
+    fn read_chunk(&mut self, size: u64) -> Result<DataChunk, DataReaderError>;
     fn seek(&mut self, offset: i64) -> Result<u64, DataReaderError>;
 
     fn close(&mut self) -> Result<(), DataReaderError>;
@@ -53,11 +53,7 @@ impl DataReader for FileReader {
     /// # Behavior
     /// - Updates internal position only on successful reads
     /// - Returns None when EOF is encountered before completing the read
-    fn read_chunk(&mut self, size: u64) -> Result<Option<DataChunk>, DataReaderError> {
-        if 0 == size {
-            return Ok(None);
-        }
-
+    fn read_chunk(&mut self, size: u64) -> Result<DataChunk, DataReaderError> {
         let file = self.file.as_mut().ok_or(DataReaderError::IO(Error::new(
             ErrorKind::Other,
             "file not open",
@@ -69,7 +65,7 @@ impl DataReader for FileReader {
                 self.position += size;
                 let slice_buffer = ArcBytes::<BoxedSliceLayout>::from(buffer);
                 let data_chunk = DataChunk { data: slice_buffer };
-                Ok(Some(data_chunk))
+                Ok(data_chunk)
             }
             Err(ref e) if e.kind() == std::io::ErrorKind::UnexpectedEof => {
                 let actual_size = buffer.len()
@@ -86,9 +82,12 @@ impl DataReader for FileReader {
                     self.position += actual_size as u64;
                     let slice_buffer = ArcBytes::<BoxedSliceLayout>::from(buffer);
                     let data_chunk = DataChunk { data: slice_buffer };
-                    Ok(Some(data_chunk))
+                    Ok(data_chunk)
                 } else {
-                    Ok(None)
+                    Err(DataReaderError::IO(std::io::Error::new(
+                        ErrorKind::UnexpectedEof,
+                        "unexpected eof",
+                    )))
                 }
             }
             Err(e) => Err(DataReaderError::IO(e)),
